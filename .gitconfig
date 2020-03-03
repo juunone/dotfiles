@@ -1,0 +1,41 @@
+[alias]
+	s = "status -s"
+	nb = "!git checkout -b"
+	cb = "!git branch -d $(git branch --merged | grep -v '^\\*\\|\\<master$')"
+	db = "!git branch | egrep -v '^\\*|master|production' | fzf -m | xargs git branch -D"
+	ch = "!git checkout $(git bselect)"
+	ia = "!git add $(git ls-files --modified --others --exclude-standard | fzf -m)"
+  id = "!git diff $(git ls-files --modified --others --exclude-standard | fzf -m)"
+	a = "!git diff-select | xargs git add"
+	re = "!git diff --name-only --cached | fzf -m | xargs git reset"
+	rmdiff = "!rm -rf $(git diff-select)"
+	chdiff = "!git checkout $(git diff-select)"
+	master = "!git fetch && git checkout master && git pull"
+	pu = "!f() { \
+         [[ $(git config \"branch.$(git symbolic-ref --short HEAD).merge\") = '' ]] && \
+         git push -u origin $(git symbolic-ref --short HEAD) $@ || \
+         git push $@; \
+       }; f"
+	bselect = "! # select branch with preview; \n\
+			f() { \
+					_height=$(stty size | awk '{print $1}');\
+					git branch | egrep -v '^\\*' | fzf --preview \"git l {1} | head -n $_height\"; \
+			}; f"
+	diff-select = "! # add files with fzf preview diffs; \n\
+		f() { \
+			_height=$(stty size | awk '{print $1}');\
+			git diff-info \
+			| fzf -m --header \"$(git diff --shortstat)\" --preview \
+				\"if [[ {1} == '??' ]]; then cat {3}; else git diff {3}; fi \
+				| head -n $_height \
+				| pygmentize\" \
+			| awk '{print $3}'; \
+		}; f"
+	diff-info = "! # get diff info;\n\
+		fileA=/tmp/git-s-$(uuidgen); \
+		fileB=/tmp/git-diff-$(uuidgen); \
+		git s | awk '{print $2,$1}' > $fileA; \
+		git diff --numstat | awk '{print $3,$1,$2}' > $fileB; \
+		join -t' ' -a 1 $fileA $fileB | awk '{print $2, \"(+\"$3 \",-\"$4\")\", $1}' | sed 's/(+,-)/./' | column -t -s' ' ; \
+		rm -f $fileA $fileB; \
+	"

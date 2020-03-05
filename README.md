@@ -1,4 +1,4 @@
-<h1 align="center">dotfiles 👋</h1>
+<h1 align="center">dotfiles 🍓</h1>
 <p>
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
@@ -34,6 +34,10 @@ $$ |  $$ |$$ |  $$ | $$ |$$\ $$ |      $$ |$$ |$$   ____| \____$$\
 
 * Website: https://juunone.github.io/
 * Github: [@juunone](https://github.com/juunone)
+
+## 🙏 References
+[wabi dotfiles](https://github.com/wabi91/dotfiles)  
+[hidekuma dotfiles](https://github.com/hidekuma/dotfiles)
 
 ## 📝 License
 Copyright © 2020 [juunone <juunone@gmail.com>](https://github.com/juunone).<br />
